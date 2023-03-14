@@ -36,7 +36,7 @@ def continuingStudentObjects():
         #read student attributes from dataframe
         name=df.iloc[i,0]
         gender=df.iloc[i,1]
-        pnationality=df.iloc[i,3].split(',')
+        pnationality=df.iloc[i,3].replace(" ", "").split(',')
         cardinality=int(df.iloc[i,4])
 
         #create continuingstudent object
@@ -59,7 +59,7 @@ def freshmenObjects():
 
         #output after split: "code", "countryname"
         nation = nationality.split(' ') 
-        nationality = getCountry(nation[0])
+        nationality = getCountry(nation[0]).replace(" ", "")
 
         #create freshment object
         freshman = fc(name,gender,nationality)

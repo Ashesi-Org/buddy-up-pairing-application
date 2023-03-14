@@ -57,35 +57,45 @@ def pairing(continuingstudent, freshmen, exceptcountry):
     # Base pairing: continuing students wants x number of freshers from the same nationality, without exceptions ("None") AND
     # secondary pairing: continuing student wants x number of freshers from N different nationalities without exceptions
 
-    if exceptcountry[0]=="None" and len(continuingstudent.getPreferredNationality())>=1:
+    if exceptcountry[0]=="None": #and len(continuingstudent.getPreferredNationality())>=1:
         # Ensure that Ghana is the last option in the list of preferrednationalities if it was specified.
         continuingstudent= moveGhana(continuingstudent)
 
         for i in range(continuingstudent.getCardinality()):
-            for f in freshmen:
-                if len(continuingstudent.getPreferredNationality())==1:
+        
+            if len(continuingstudent.getPreferredNationality())==1:
+                for f in freshmen:
                     # pairing when "Any" is in nationality
                     if "Any" in continuingstudent.getPreferredNationality()[0]:
                         if continuingstudent.getGender()[0]== f.getGender()[0]:
                             pair.append(f)
                             listoffreshmen.remove(f) # remove paired fresher 
-                            break  
-                    # pairing when country
-                    elif continuingstudent.getPreferredNationality()[0]==f.getNationality() and continuingstudent.getGender()[0]== f.getGender():
+                            break 
+
+                    # pairing when countries specified
+
+                    # **
+                    # Notice that the condition to check for nationality is 'in' instead of   
+                    # using cardinality to iterate through the list. if 'i' in the for-loop is used to iterate through the list 
+                    # some continuing students may not get complete pairing since the preferred nationality that coincides with
+                    # with the freshers is occuring last in the continuing student preferred list.
+                    # **
+                    
+                    elif f.getNationality() in continuingstudent.getPreferredNationality() and continuingstudent.getGender()[0]== f.getGender():
                         pair.append(f)
                         listoffreshmen.remove(f) # remove paired fresher 
                         break
                     else:
                         continue
-                elif len(continuingstudent.getPreferredNationality())>1:
-                    
-                    if continuingstudent.getPreferredNationality()[i]==f.getNationality() and continuingstudent.getGender()[0]== f.getGender():
+            elif len(continuingstudent.getPreferredNationality())>1:
+                for f in freshmen: 
+                    if f.getNationality() in continuingstudent.getPreferredNationality() and continuingstudent.getGender()[0]== f.getGender():
                         pair.append(f)
                         listoffreshmen.remove(f)
                         break
                     else:
                         continue
-            if i==continuingstudent.getCardinality()-1:
+            if i==continuingstudent.getCardinality()-1: # condition checks if pairing is complete
                 pairsummary["continuingstudent"] = continuingstudent
                 pairsummary["freshers"] = pair
 
@@ -93,14 +103,14 @@ def pairing(continuingstudent, freshmen, exceptcountry):
                     pairsummary["status"] = "complete"
                 else: #incomplete pairing
                     pairsummary["status"] = "incomplete"
-                    
                 return pairsummary
             else:
                 continue
+           
 
     # Base and secondary pairing with exception
     # len(exceptcountry)>0, it has country(ies) not 'None'
-    elif exceptcountry[0]!="None" and len(continuingstudent.getPreferedNationality())>=1:
+    elif exceptcountry[0]!="None": 
         index = 0
         for i in range(continuingstudent.getCardinality()):
             country = exceptcountry[index]
@@ -108,7 +118,7 @@ def pairing(continuingstudent, freshmen, exceptcountry):
                 # don't pair with a fresher of the 'except nationality' 
                 if country!=f.getNationality() and continuingstudent.getGender()[0]== f.getGender():
                     pair.append(f) 
-                    listoffreshmen.remove(f) # remove fresher
+                    listoffreshmen.remove(f) # remove paired fresher
                     break
                 else:
                     continue
@@ -121,7 +131,6 @@ def pairing(continuingstudent, freshmen, exceptcountry):
                     pairsummary["status"] = "complete"
                 else: # incomplete pairing
                     pairsummary["status"] = "incomplete"
-                    
                 return pairsummary
             else:
                 # if continuing student specified more than one 'except country' so we can increase the index.
@@ -130,7 +139,7 @@ def pairing(continuingstudent, freshmen, exceptcountry):
                     continue
                 else:
                     #keep the index unchanged
-                    continue               
+                    continue              
     else:  
         return 404 #error message
 
@@ -152,23 +161,29 @@ class Edges:
         if pairingConstant("Male")==True:
             if pairingConstant("Female")==True:
                 for c in listofcontinuingstudents:
-                    exceptcountry=[]            
-                    pnationality =c.getPreferredNationality()
+                    exceptcountry = []            
+                    pnationality = c.getPreferredNationality()
                     for country in pnationality:
                         # first check if 'not country' exist
                         if "Not" in country:
-                            exceptcountry.append(country.split(" ")[1])
+                            exceptcountry.append(country.split("Not")[1])
+                            break
                         elif "Any" in country: 
                             exceptcountry.append("None")
+                            break
                         else: 
-                            exceptcountry.append("None")
-                            continue
-                    
-                    
-                    # do pairing for 'not country'
-                    summary = pairing(c, listoffreshmen, exceptcountry)     
+                            exceptcountry.append("None") # a case where we have actual countries.
 
-                    print('\n',summary['continuingstudent'].toString(), '\n',summary['freshers'][0].toString(), '\n', summary['freshers'][1].toString())
+                    # do pairing for 'not country'
+                    if(len(listoffreshmen)==0):
+                        print("Hurray, match is complete")
+                        return self.matched,reservedpairs
+                    else:
+                        summary = pairing(c, listoffreshmen, exceptcountry)     
+                    
+                    print('\n',summary['continuingstudent'].toString())
+                    for i in range(len(summary['freshers'])):
+                        print(summary['freshers'][i].toString())
             
                     # a pairing summary status may or may not be complete, 
                     # if status is complete, append the paired item into the list.
@@ -185,11 +200,9 @@ class Edges:
                     else: 
                         continue
             else:
-                print("repopulate female cardinality and then do matching again.")   
+                print("Error: Not enough females for pairing, repopulate female cardinality and then do matching again.")   
         else: 
-            print("repopulate male cardinality and then do matching again.")      
-        
-        return self.matched,reservedpairs
+            print("Error: Not enough males for pairing, repopulate male cardinality and then do matching again.")      
     
     # with reserved pairs, check if they're freshers that have not been paired and add them.
     
