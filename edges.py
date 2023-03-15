@@ -7,6 +7,8 @@ from createobjects import freshmenObjects
 listofcontinuingstudents = continuingStudentObjects()
 listoffreshmen = freshmenObjects()
 
+print(len(listofcontinuingstudents), len(listoffreshmen))
+
 '''
     @brief: pairing constant determines if the number of continuing student present and their 
     cardinality guarantees the pairing of all male and female freshmen. 
@@ -49,6 +51,18 @@ def moveGhana(continuingstudent):
     continuingstudent.setPreferredNationality(list)
     return continuingstudent
 
+# Function to return the pairing description when pairing has been done.
+def pairDescription(number, continuingstudent, pairsummary, pair):
+    pairsummary["continuingstudent"] = continuingstudent
+    pairsummary["freshers"] = pair
+
+    if continuingstudent.getCardinality()==len(pair): # complete pairing
+        listofcontinuingstudents.remove(continuingstudent)
+        pairsummary["status"] = "complete"
+    else: #incomplete pairing
+        pairsummary["status"] = "incomplete"
+    return pairsummary
+    
 
 def pairing(continuingstudent, freshmen, exceptcountry):
     pair = []
@@ -57,7 +71,7 @@ def pairing(continuingstudent, freshmen, exceptcountry):
     # Base pairing: continuing students wants x number of freshers from the same nationality, without exceptions ("None") AND
     # secondary pairing: continuing student wants x number of freshers from N different nationalities without exceptions
 
-    if exceptcountry[0]=="None": #and len(continuingstudent.getPreferredNationality())>=1:
+    if exceptcountry[0]=="None":
         # Ensure that Ghana is the last option in the list of preferrednationalities if it was specified.
         continuingstudent= moveGhana(continuingstudent)
 
@@ -72,15 +86,7 @@ def pairing(continuingstudent, freshmen, exceptcountry):
                             listoffreshmen.remove(f) # remove paired fresher 
                             break 
 
-                    # pairing when countries specified
-
-                    # **
-                    # Notice that the condition to check for nationality is 'in' instead of   
-                    # using cardinality to iterate through the list. if 'i' in the for-loop is used to iterate through the list 
-                    # some continuing students may not get complete pairing since the preferred nationality that coincides with
-                    # with the freshers is occuring last in the continuing student preferred list.
-                    # **
-                    
+                    # pairing when countries specified                    
                     elif f.getNationality() in continuingstudent.getPreferredNationality() and continuingstudent.getGender()[0]== f.getGender():
                         pair.append(f)
                         listoffreshmen.remove(f) # remove paired fresher 
@@ -95,21 +101,14 @@ def pairing(continuingstudent, freshmen, exceptcountry):
                         break
                     else:
                         continue
+            
             if i==continuingstudent.getCardinality()-1: # condition checks if pairing is complete
-                pairsummary["continuingstudent"] = continuingstudent
-                pairsummary["freshers"] = pair
-
-                if continuingstudent.getCardinality()==len(pair): # complete pairing
-                    pairsummary["status"] = "complete"
-                else: #incomplete pairing
-                    pairsummary["status"] = "incomplete"
+                pairsummary = pairDescription(i, continuingstudent, pairsummary, pair)
                 return pairsummary
-            else:
-                continue
-           
+            else: 
+                continue           
 
-    # Base and secondary pairing with exception
-    # len(exceptcountry)>0, it has country(ies) not 'None'
+    #  it has country(ies) not 'None'
     elif exceptcountry[0]!="None": 
         index = 0
         for i in range(continuingstudent.getCardinality()):
@@ -122,17 +121,11 @@ def pairing(continuingstudent, freshmen, exceptcountry):
                     break
                 else:
                     continue
-                
-            if i==continuingstudent.getCardinality()-1:
-                pairsummary["continuingstudent"] = continuingstudent
-                pairsummary["freshers"] = pair
 
-                if continuingstudent.getCardinality()==len(pair): # complete pairing
-                    pairsummary["status"] = "complete"
-                else: # incomplete pairing
-                    pairsummary["status"] = "incomplete"
+            if i==continuingstudent.getCardinality()-1: # condition checks if pairing is complete
+                pairsummary = pairDescription(i, continuingstudent, pairsummary, pair)
                 return pairsummary
-            else:
+            else: 
                 # if continuing student specified more than one 'except country' so we can increase the index.
                 if len(exceptcountry)-index>1: 
                     index+=1
@@ -174,7 +167,7 @@ class Edges:
                         else: 
                             exceptcountry.append("None") # a case where we have actual countries.
 
-                    # do pairing for 'not country'
+                    # Commence pairing
                     if(len(listoffreshmen)==0):
                         print("Hurray, match is complete")
                         return self.matched,reservedpairs
@@ -184,7 +177,12 @@ class Edges:
                     print('\n',summary['continuingstudent'].toString())
                     for i in range(len(summary['freshers'])):
                         print(summary['freshers'][i].toString())
-            
+
+                    #**
+                    # this part of the code is getting too big, create another function for this
+                    # next this is the part that would be useful for writing paired information to dataframe.
+                    #**
+
                     # a pairing summary status may or may not be complete, 
                     # if status is complete, append the paired item into the list.
                     if summary["status"]=="complete":
@@ -195,8 +193,12 @@ class Edges:
                     elif summary["status"] == "incomplete":
                         self.paired["continuingstudent"] = summary["continuingstudent"]
                         self.paired["freshers"] = summary["freshers"]
-                        reservedpairs.append(self.paired)
-                        print('I am incomplete')
+                        if(len(summary["freshers"])==0):
+                            print('I am incomplete: I don\'t have any of my freshers')
+                            reservedpairs.append(self.paired)
+                        else:
+                            print('I am incomplete: I don\'t have all of my freshers')
+                        
                     else: 
                         continue
             else:
@@ -209,3 +211,5 @@ class Edges:
 edges = Edges(listofcontinuingstudents, listoffreshmen)
 
 matched, reserved = edges.matching()
+
+print(len(listofcontinuingstudents), len(listoffreshmen))
