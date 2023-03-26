@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/home.css')}}">
+    <title>Flask Tutorial</title>
+    </style>
+  </head>
+  <body>
+
+    {% extends "template.html" %}
+    {% block content %}
+
+    <section>
+      <div class="progress"></div>
+    </section>
+
+    {% endblock %}
+    
+  </body>
+</html>
