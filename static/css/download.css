@@ -1,0 +1,63 @@
+.btn2 {
+    margin-bottom:50px
+}
+
+.success-text{
+    display:block;
+    margin:auto;
+    font-size:24px;
+    color:#A020F0;
+    text-align: center;
+    font-weight: 600;
+}
+
+img.download-icon{
+    display:block;
+    width:20px;
+    height:20px;
+    margin:auto;
+    margin-top:40px;
+    margin-bottom:30px;
+}
+
+.error-status{
+    height:200px;
+}
+
+.enabled {
+    width:40%;
+    margin-top:2px;
+    padding:2px;
+    font-size: 14px;
+}
+
+.enabled:hover{
+    font-size: 14px;
+}
+
+.progress-status div, .error-status div{
+    width: 50%;
+    height:85%;
+    padding:5px;
+    margin:auto;
+    margin-bottom:20px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.progress-status img.excel, .error-status img.excel{
+    display:block;
+    width:70%;
+    height:70%;
+    margin:auto;
+}
+
+p.notification{
+    width:100%; 
+    display:block; 
+    margin:auto; 
+    text-align:center;
+    font-size:11px;
+    text-decoration: underline;
+    margin-bottom:4px; 
+    color:green;
+}

@@ -1,3 +1,128 @@
-.main {
-    color:red;
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:700,300);
+
+body{
+    font-family:'Open Sans', 'Helvetica Neue', sans-serif;
 }
+
+.header{
+    height: 150px;
+    margin-top:0;
+    margin-bottom: 10px;
+    padding:10px;
+    background-color:#A020F0;
+}
+
+.title{
+    color:white;
+    max-width: 40px;
+    font-weight: 200;
+}
+
+.footer{
+    border-top: 0.5px solid gray;
+    padding-top:5px;
+    margin-top: 70px;
+    text-align: center;
+    font-size: 12px;
+
+}
+
+section{
+    height: 700px;
+}  
+
+.row {
+    height:700px;
+    width:70%;
+    margin-right:2%;
+    float:left;
+    border-right:1px solid gray;
+}
+
+.column {
+    width: 40%;
+    height:300px;
+    margin-top:100px;
+    margin-left:6%;
+}
+
+.column div{
+    width: 60%;
+    height:60%;
+    padding:20px;
+    margin:auto;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+img.excel{
+    display:block;
+    width:100px;
+    height:115px;
+    margin:auto;
+}
+
+span.upload-status{
+    display:block; 
+    width:80%;
+    text-align: center;
+    margin:auto; 
+    margin-top: 10px; 
+    color:#808080; 
+    font-size:12px;
+}
+
+.column img.upload{
+    display:block;
+    width:30px;
+    height:25px;
+    margin:auto;
+    margin-top:80px;
+    margin-bottom:100px;
+}
+
+.btn{
+    display:block;
+    font-size:13px;
+    width:80%;
+    margin:auto;
+    padding:15px;
+    background-color: #A020F0;
+    color:white;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.btn:hover{
+    background-color: white;
+    color:black;
+    font-size:15px;
+    font-weight: 600;
+}
+
+
+/* Progress bars  */
+
+/**/ 
+/*default*/
+
+.progress{
+    width:28%; 
+    margin-left:2%;
+    height:100%; 
+    padding:15px;
+    background:white;
+    border-radius: 0;
+}
+
+.disabled {
+    opacity: 0.1;
+    cursor: not-allowed;
+    margin-bottom:0;
+}
+
+/**/ 
+/*progress clicked*/
+
+.enabled {
+    margin-top:150px;
+}
+
