@@ -9,7 +9,7 @@ body{
     margin-top:0;
     margin-bottom: 10px;
     padding:10px;
-    background-color:#A020F0;
+    background-color:#5c3592;
 }
 
 .title{
@@ -54,6 +54,17 @@ section{
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
+p.step{
+    display:block; 
+    width: 80%; 
+    margin:auto; 
+    margin-bottom: 10px; 
+    text-align: center; 
+    font-size: 24px; 
+    font-weight:600; 
+    color:black;
+}
+
 img.excel{
     display:block;
     width:100px;
@@ -71,6 +82,17 @@ span.upload-status{
     font-size:12px;
 }
 
+span.upload-status-active{
+    display:block; 
+    width:80%;
+    text-align: center;
+    margin:auto; 
+    margin-top: 10px; 
+    color:green;
+    text-decoration: underline;
+    font-size:12px;
+}
+
 .column img.upload{
     display:block;
     width:30px;
@@ -80,13 +102,21 @@ span.upload-status{
     margin-bottom:100px;
 }
 
+input[type=file]{
+    display:block;
+    width: 80%;
+    margin:auto;
+    margin-bottom:20px;
+    font-size:12px;
+}
+
 .btn{
     display:block;
-    font-size:13px;
+    font-size:16px;
     width:80%;
     margin:auto;
     padding:15px;
-    background-color: #A020F0;
+    background-color: #5c3592;
     color:white;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }

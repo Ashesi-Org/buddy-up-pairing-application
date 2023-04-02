@@ -18,7 +18,7 @@ print(len(listofcontinuingstudents), len(listoffreshmen))
 '''
 
 def pairingConstant(gender):
-
+    
     if gender=="Male" or gender=="Female":
         sumcon =0
 

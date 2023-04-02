@@ -29,21 +29,33 @@
     <section class="container-xxl">
       <div class="row">
         <div class="column">
-          <div><img class="excel" src="../static/img/excel-icon.png" alt="excel icon"></div>
-          <span class="upload-status">no file uploaded yet</span>
+          <p class='step'>Step 1</p>
+          <div><img class="excel" src="../static/img/excel-icon-active.png" alt="excel icon"></div>
+          <span class="upload-status-active">file uploaded successfully</span>
           <img class="upload" src="../static/img/fast-forward.png" alt="upload icon">
-          <button class="btn">Upload Fresher List</button>
+          <form class="form" action = "http://localhost:5000/" method = "POST" 
+            enctype = "multipart/form-data">
+            <input class="form-control" class="choose-file" type = "file" name = "file" disabled >
+            <input class="btn disabled" value="Upload Fresher List" type = "submit">
+          </form>
         </div>
         <div class="column">
-          <div><img class="excel" src="../static/img/excel-icon.png" alt="excel icon"></div>
-          <span class="upload-status">no file uploaded yet</span>
+          <p class='step'>Step 2</p>
+          <div><img class="excel" src="../static/img/excel-icon-active.png" alt="excel icon"></div>
+          <span class="upload-status-active">{{name}}</span>
           <img class="upload" src="../static/img/fast-forward.png" alt="upload icon">
-          <button class="btn">Upload Continuing Student List</button>
+          <form class="form" action = "http://localhost:5000/" method = "POST" 
+            enctype = "multipart/form-data">
+            <input class="form-control" class="choose-file" type = "file" name = "file" disabled>
+            <input class="btn disabled" value="Upload Cont. Stud. List" type = "submit">
+          </form>
         </div>
       </div>
       <article class="progress">
         <div style="width:100%; height:100%">
-          <button class="btn2"><img  src="../static/img/back.png" style="width:16px; height:16px; margin-right:5px" src="static/img/back.png">Back</button>
+          <form action = "http://localhost:5000/" method = "POST">
+            <button type="submit" class="btn2"><img  src="../static/img/back.png" style="width:16px; height:16px; margin-right:5px" src="static/img/back.png">Back</button>
+          </form>
           <div class="progress-status" style="background: red;">progress status here</div>
           <div class="error-status" style="background: blue;">Error handling here</div>
           <button class="enabled btn">Proceed to Pairing</button>

@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="../static/css/home.css">
     <link rel="stylesheet" type="text/css" href="../static/css/progress.css">
     
-    <title>Buddy Up Pairing System</title>
+    <title>Download status</title>
   </head>
   <body>
     <header class="container-fluid header">
@@ -23,7 +23,7 @@
         <span>
           <i class="fa-solid fa-bell fa-lg me-2" style="width: 20px; height:20px; margin-right:5px;"></i>
           <i class="fa-solid fa-user fa-lg me-2" style="width: 20px; height:20px"></i>
-          <strong style="color:white; font-weight: 300; font-size:1em">Vanessa Amoako</strong>
+          <strong style="color:white; font-weight: 300; font-size:0.8em">Vanessa Amoako</strong>
         </span>
       </div>
     </header>
@@ -31,10 +31,10 @@
       <div class="row">
         <div class="column">
           <p class='step'>Step 1</p>
-          <div><img class="excel" src="../static/img/excel-icon.png" alt="excel icon"></div>
-          <span class="upload-status">no file uploaded yet</span>
-          <img class="upload" src="../static/img/fast-forward-active.png" alt="upload icon">
-          <form class="form" action = "http://localhost:5000/success" method = "POST" 
+          <div><img class="excel" src="../static/img/excel-icon-active.png" alt="excel icon"></div>
+          <span class="upload-status-active">{{name}}</span>
+          <img class="upload" src="../static/img/fast-forward.png" alt="upload icon">
+          <form class="form" action = "http://localhost:5000/" method = "POST" 
             enctype = "multipart/form-data">
             <input class="form-control" class="choose-file" type = "file" name = "file" >
             <input class="btn" value="Upload Fresher List" type = "submit">
@@ -45,14 +45,14 @@
           <div><img class="excel" src="../static/img/excel-icon.png" alt="excel icon"></div>
           <span class="upload-status">no file uploaded yet</span>
           <img class="upload" src="../static/img/fast-forward-active.png" alt="upload icon">
-          <form class="form" action = "http://localhost:5000/" method = "POST" 
+          <form class="form" action = "http://localhost:5000/progress" method = "POST" 
             enctype = "multipart/form-data">
             <input class="form-control" class="choose-file" type = "file" name = "file" >
             <input class="btn" value="Upload Cont. Stud. List" type = "submit">
           </form>
         </div>
       </div>
-      <div class="progress"><button class="btn disabled">Proceed to Pairing</button></div>
+      <div class="progress"><button class="disabled btn">Proceed to Pairing</button></div>
     </section>
     <footer class="container footer">
       <p>Copyright &#169; ODIP 2023 </p>
