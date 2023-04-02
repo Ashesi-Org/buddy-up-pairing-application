@@ -33,10 +33,14 @@ def pairingConstant(gender):
             if(f.getGender()==gender[0]):
                 sumfres+=1
 
-        if(sumcon/sumfres > 1):
-            return True
-        else:
-            return False 
+        try:
+            result = sumcon/sumfres
+            if(result > 1):
+                return True
+            else:
+                return False 
+        except ZeroDivisionError as e:
+            print("Error: Cannot divide by zero")
     else:
         return "wrong parameter passed [in pairingConstant module]" 
         
@@ -138,17 +142,27 @@ def pairing(continuingstudent, freshmen, exceptcountry):
 
 
 class Edges:    
-    def __init__(self, listofcontinuingstudents, listoffreshmen):
+
+    def __init__(self, listofcontinuingstudents, listoffreshmen, matched, reserved):
         self.listofcontinuingstudents = listofcontinuingstudents
         self.listoffreshmen = listoffreshmen
-        self.paired=dict()
-        self.matched = []
+        self.matched = matched
+        self.reservedpairs =reserved #continuing students who are not paired at the end of the matching.
 
     def getMatched(self):
         return self.matched
     
+    def getReserved(self):
+        return self.reservedpairs
+    
+    def setMatched(self, matched):
+        self.matched = matched 
+
+    def setReserved(self, reserved):
+        self.reservedpairs=reserved
+    
     def matching(self):
-        reservedpairs = []
+        paired=dict()
 
         # first check if they're enough male and female continuing students to be paired with male freshers
         if pairingConstant("Male")==True:
@@ -169,8 +183,9 @@ class Edges:
 
                     # Commence pairing
                     if(len(listoffreshmen)==0):
-                        print("Hurray, match is complete")
-                        return self.matched,reservedpairs
+                        print("Hurray, match is complete")    
+                        print(len(listofcontinuingstudents), len(listoffreshmen))                  
+                        return self.matched,self.reservedpairs
                     else:
                         summary = pairing(c, listoffreshmen, exceptcountry)     
                     
@@ -186,30 +201,47 @@ class Edges:
                     # a pairing summary status may or may not be complete, 
                     # if status is complete, append the paired item into the list.
                     if summary["status"]=="complete":
-                        self.paired["continuingstudent"] = summary["continuingstudent"]
-                        self.paired["freshers"] = summary["freshers"]
-                        self.matched.append(self.paired)
+                        paired["continuingstudent"] = summary["continuingstudent"]
+                        paired["freshers"] = summary["freshers"]
+                        self.matched.append(paired)
                         print('I am complete')
                     elif summary["status"] == "incomplete":
-                        self.paired["continuingstudent"] = summary["continuingstudent"]
-                        self.paired["freshers"] = summary["freshers"]
+                        paired["continuingstudent"] = summary["continuingstudent"]
+                        paired["freshers"] = summary["freshers"]
                         if(len(summary["freshers"])==0):
                             print('I am incomplete: I don\'t have any of my freshers')
-                            reservedpairs.append(self.paired)
+                            self.reservedpairs.append(paired['continuingstudent'])
                         else:
                             print('I am incomplete: I don\'t have all of my freshers')
                         
                     else: 
                         continue
             else:
-                print("Error: Not enough females for pairing, repopulate female cardinality and then do matching again.")   
+                print("Error: Not enough females for pairing, repopulate female cardinality and then do matching again.") 
+                return self.matched,self.reservedpairs 
         else: 
-            print("Error: Not enough males for pairing, repopulate male cardinality and then do matching again.")      
+            print("Error: Not enough males for pairing, repopulate male cardinality and then do matching again.")   
+            return self.matched,self.reservedpairs   
     
-    # with reserved pairs, check if they're freshers that have not been paired and add them.
-    
-edges = Edges(listofcontinuingstudents, listoffreshmen)
+def createCSVFiles():
+    matched = []
+    reserved = []
+    edges = Edges(listofcontinuingstudents, listoffreshmen, matched, reserved)
+    matched, reservedpairs= edges.matching()
 
-matched, reserved = edges.matching()
+    print("MATCHED "+str(len(matched))+"\n")
 
-print(len(listofcontinuingstudents), len(listoffreshmen))
+    print(matched)
+
+    # for pair in matched:
+    #     cs = pair['continuingstudent']
+    #     print(cs.toString())
+    #     f = pair['freshers']
+    #     for i in range(len(f)):
+    #         print(f[i].toString())
+       
+
+    # for cs in reservedpairs:
+    #     print(cs.toString())
+
+createCSVFiles()

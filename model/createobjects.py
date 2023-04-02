@@ -67,5 +67,3 @@ def freshmenObjects():
         listoffreshmen.append(freshman)
 
     return listoffreshmen
-
-continuingStudentObjects()
