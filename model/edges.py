@@ -1,8 +1,10 @@
 #do a progress bar on the display screen
 
-#importing student profiles/objects
 from createobjects import continuingStudentObjects
 from createobjects import freshmenObjects
+import pandas as pd
+import openpyxl
+import os
 
 listofcontinuingstudents = continuingStudentObjects()
 listoffreshmen = freshmenObjects()
@@ -162,12 +164,16 @@ class Edges:
         self.reservedpairs=reserved
     
     def matching(self):
-        paired=dict()
 
         # first check if they're enough male and female continuing students to be paired with male freshers
         if pairingConstant("Male")==True:
             if pairingConstant("Female")==True:
+                countpairs=0
+                countcardinality =0
+                countcountinuingstudents = 0
+                notpaired =0
                 for c in listofcontinuingstudents:
+                    paired=dict()
                     exceptcountry = []            
                     pnationality = c.getPreferredNationality()
                     for country in pnationality:
@@ -184,10 +190,11 @@ class Edges:
                     # Commence pairing
                     if(len(listoffreshmen)==0):
                         print("Hurray, match is complete")    
-                        print(len(listofcontinuingstudents), len(listoffreshmen))                  
+                        print(len(listofcontinuingstudents), len(listoffreshmen))
+                        print("\n\n","number of matched pairs: ",countpairs,"\n total cardinalities used", countcardinality, "\n paired countinuing students",countcountinuingstudents, "\n not paired countinuing students", notpaired,"\n\n")                 
                         return self.matched,self.reservedpairs
                     else:
-                        summary = pairing(c, listoffreshmen, exceptcountry)     
+                        summary = pairing(c, listoffreshmen, exceptcountry)  
                     
                     print('\n',summary['continuingstudent'].toString())
                     for i in range(len(summary['freshers'])):
@@ -204,6 +211,9 @@ class Edges:
                         paired["continuingstudent"] = summary["continuingstudent"]
                         paired["freshers"] = summary["freshers"]
                         self.matched.append(paired)
+                        countcardinality+=c.getCardinality()
+                        countcountinuingstudents+=1
+                        countpairs+=1
                         print('I am complete')
                     elif summary["status"] == "incomplete":
                         paired["continuingstudent"] = summary["continuingstudent"]
@@ -211,9 +221,14 @@ class Edges:
                         if(len(summary["freshers"])==0):
                             print('I am incomplete: I don\'t have any of my freshers')
                             self.reservedpairs.append(paired['continuingstudent'])
+                            notpaired+=1
                         else:
                             print('I am incomplete: I don\'t have all of my freshers')
-                        
+                            listofcontinuingstudents.remove(c)
+                            countcardinality+=c.getCardinality()
+                            countpairs+=1
+                            countcountinuingstudents+=1
+                            self.matched.append(paired)
                     else: 
                         continue
             else:
@@ -222,26 +237,108 @@ class Edges:
         else: 
             print("Error: Not enough males for pairing, repopulate male cardinality and then do matching again.")   
             return self.matched,self.reservedpairs   
+
+
+matched = []
+reserved = []
+E = Edges(listofcontinuingstudents, listoffreshmen, matched, reserved)
+
+def generateExcelFiles(status="paired-list", edges=E):
+    matched, reservedpairs = edges.matching()
+
+    print(len(matched), len(reservedpairs))
+
+    if not os.path.exists('../controller/downloads'):
+        os.makedirs('../controller/downloads')
+
+    # Initialize an empty list to store data
+    data = []
+
+    if(status=="paired-list"):
+        # Loop through each pair of matched students
+        for match in matched:
+            cs = match['continuingstudent']
+            for f in match['freshers']:
+                # Create a dictionary with the data for this pair
+                record = {
+                    'freshername': f.getName(),
+                    'buddyname': cs.getName(),
+                    'buddynationality': 'empty',
+                    'buddygender': cs.getGender(),
+                    'buddyyeargroup': 'empty',
+                    'buddyemail': 'empty',
+                    'buddyphonenumber': 'empty',
+                    'funfact': 'empty'
+
+                }
+                # Add this dictionary to the list of data
+                data.append(record)
+
+        print(len(data))
+        # Create a new Excel workbook and sheet
+        wb = openpyxl.Workbook()
+        sheet = wb.active
+
+        # Write the header row to the sheet
+        headers = list(data[0].keys())
+        for col_num, header in enumerate(headers, 1):
+            cell = sheet.cell(row=1, column=col_num)
+            cell.value = header
+
+        # Write the data to the sheet
+        for row_num, record in enumerate(data, 2):
+            for col_num, header in enumerate(headers, 1):
+                cell = sheet.cell(row=row_num, column=col_num)
+                cell.value = record[header]
+
+        # Save the workbook to a file
+        wb.save('../controller/downloads/matched.xlsx')
+
+        return "Successfully generated paired list"
     
-def createCSVFiles():
-    matched = []
-    reserved = []
-    edges = Edges(listofcontinuingstudents, listoffreshmen, matched, reserved)
-    matched, reservedpairs= edges.matching()
+    elif(status=="unpaired-list"):
+        delimiter = ','
 
-    print("MATCHED "+str(len(matched))+"\n")
+        # Loop through each pair of matched students
+        for cs in reservedpairs:
+            # Create a dictionary with the data for this pair
+            record = {
+                'Fullname': cs.getName(),
+                'Gender': cs.getGender(),
+                'Nationality': 'empty',            
+                'PreferredNationality': delimiter.join(cs.getPreferredNationality()),
+                'NumberofFreshers':cs.getCardinality(),
+                'Email': 'empty',
+                'Phonenumber': 'empty',
+                'Funfact': 'empty'
+            }
+            # Add this dictionary to the list of data
+            data.append(record)
+        
+        # Create a new Excel workbook and sheet
+        wb = openpyxl.Workbook()
+        sheet = wb.active
 
-    print(matched)
+        print(len(data))
 
-    # for pair in matched:
-    #     cs = pair['continuingstudent']
-    #     print(cs.toString())
-    #     f = pair['freshers']
-    #     for i in range(len(f)):
-    #         print(f[i].toString())
-       
+        # Write the header row to the sheet
+        headers = list(data[0].keys())
+        for col_num, header in enumerate(headers, 1):
+            cell = sheet.cell(row=1, column=col_num)
+            cell.value = header
 
-    # for cs in reservedpairs:
-    #     print(cs.toString())
+        # Write the data to the sheet
+        for row_num, record in enumerate(data, 2):
+            for col_num, header in enumerate(headers, 1):
+                cell = sheet.cell(row=row_num, column=col_num)
+                cell.value = record[header]
 
-createCSVFiles()
+        # Save the workbook to a file
+        wb.save('../controller/downloads/unmatched.xlsx')
+        return "Successfully generated list of unpaired continuing students"
+    else:
+        return "Internal error"
+
+
+generateExcelFiles(status="paired-list", edges=E)
+generateExcelFiles(status="unpaired-list",edges=E)

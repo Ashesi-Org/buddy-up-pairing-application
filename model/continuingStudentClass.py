@@ -37,4 +37,5 @@ class Continuing:
     # TOSTRING
 
     def toString(self):
-        return "name: "+self.name,"preferred nationality: "+str(self.p_nationality),"gender: "+self.gender,"cardinality: "+str(self.cardinality)
+        return "name: "+self.name,"preferred nationality: "+str(self.p_nationality),"gender: " \
+            +self.gender,"cardinality: "+str(self.cardinality)

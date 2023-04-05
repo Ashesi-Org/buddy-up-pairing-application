@@ -6,8 +6,8 @@
 
 import pandas as pd 
 
-continuingstudents = pd.read_excel("../controller/continuing.xlsx", index_col=0, sheet_name="continuing students")
-freshmen = pd.read_excel("../controller/freshers.xlsx", index_col=0, sheet_name="freshers")
+continuingstudents = pd.read_excel("../controller/uploads/continuing.xlsx", index_col=0, sheet_name="continuing students")
+freshmen = pd.read_excel("../controller/uploads/freshers.xlsx", index_col=0, sheet_name="freshers")
 
 '''sorting dataframe such that continuing students who specified \\Any\\
 come last, followed by those who specified \\Not country(s)\\

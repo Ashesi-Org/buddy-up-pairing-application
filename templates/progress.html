@@ -57,8 +57,9 @@
             <button type="submit" class="btn2"><img  src="../static/img/back.png" style="width:16px; height:16px; margin-right:5px" src="static/img/back.png">Back</button>
           </form>
           <div class="progress-status" style="background: red;">progress status here</div>
-          <div class="error-status" style="background: blue;">Error handling here</div>
-          <button class="enabled btn">Proceed to Pairing</button>
+          <form class="form" action = "http://localhost:5000/download" method = "POST">
+            <input class="enabled btn" style="font-size:14px" value="Go to Downloads" type = "submit">
+          </form>
         </div>
       </article>
     </section>
