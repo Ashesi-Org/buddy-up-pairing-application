@@ -21,7 +21,7 @@ img.download-icon{
 }
 
 .error-status{
-    height:200px;
+    height:180px;
 }
 
 .enabled {
@@ -36,11 +36,11 @@ img.download-icon{
 }
 
 .progress-status div, .error-status div{
-    width: 55%;
+    width: 45%;
     height:85%;
     padding:2px;
     margin:auto;
-    margin-bottom:20px;
+    margin-bottom: 20px;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
@@ -53,12 +53,19 @@ img.download-icon{
     margin-top:10px;
 }
 
+.download-files{
+    bottom: 0;
+    margin-top: 120px;
+    width: 80%;
+    padding: 10px;
+}
+
 p.notification{
     width:100%; 
     display:block; 
     margin:auto; 
     text-align:center;
-    font-size:14px;
+    font-size:12px;
     text-decoration: underline;
     color:green;
 }

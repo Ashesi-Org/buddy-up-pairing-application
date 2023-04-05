@@ -63,12 +63,9 @@
             <img class="download-icon" src="../static/img/fast-forward-download.png" alt="upload icon">
           </div>
           <div class="progress-status">
-            <div><img class="excel" src="../static/img/excel-icon.png" alt="excel icon"><p class="notification">Download paired student list</p></div>
-            <a href="{{url_for('download', filename='downloadFile.txt') }}" class="enabled btn">Download</a>
-          </div>
-          <div class="error-status">
-            <div><img class="excel" src="../static/img/excel-icon.png" alt="excel icon"><p class="notification">Download unpaired continuing students</p></div>
-            <button class="enabled btn">Download</button>
+            <div><img class="excel" src="../static/img/excel-icon-active.png" alt="excel icon"><p class="notification">Paired student list</p></div>
+            <div><img class="excel" src="../static/img/excel-icon-active.png" alt="excel icon"><p class="notification">Unpaired continuing students</p></div>
+            <a href="{{url_for('download_files')}}" class="download-files enabled btn">Download files</a>
           </div>
         </div>
       </article>

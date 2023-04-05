@@ -274,7 +274,6 @@ def generateExcelFiles(status="paired-list", edges=E):
                 # Add this dictionary to the list of data
                 data.append(record)
 
-        print(len(data))
         # Create a new Excel workbook and sheet
         wb = openpyxl.Workbook()
         sheet = wb.active
@@ -318,8 +317,6 @@ def generateExcelFiles(status="paired-list", edges=E):
         # Create a new Excel workbook and sheet
         wb = openpyxl.Workbook()
         sheet = wb.active
-
-        print(len(data))
 
         # Write the header row to the sheet
         headers = list(data[0].keys())

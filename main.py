@@ -1,11 +1,13 @@
 from distutils.log import debug
 from fileinput import filename
 import subprocess
-from flask import Flask, render_template, request, flash, redirect
+from flask import Flask, send_file, render_template, request, flash, redirect
 import os
 from werkzeug.utils import secure_filename
 import sys
-from model import *
+from glob import glob
+from io import BytesIO
+from zipfile import ZipFile
 
 
 sys.path.append('model/createobjects.py')
@@ -44,12 +46,10 @@ def success():
             filename = secure_filename(f.filename)
             f.filename="freshers.xlsx"
             f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    return render_template("success.html", name=f.filename+" successfully uploaded"+',')  
+    return render_template("success.html", name=f.filename+" successfully uploaded")  
 
 @app.route("/progress", methods = ['GET', 'POST'])
 def progress():
-
-    print("Inside progress")
     if request.method == 'POST':
         f = request.files['file']
         # check if the post request has the file part
@@ -75,15 +75,30 @@ def progress():
 
             if isFile1==True:
                 if isFile2 == True:
-                    print("I'm inside here")
                     os.chdir('model/')
                     subprocess.run(['python3', 'edges.py'])
 
     return render_template("progress.html", name=f.filename+" successfully uploaded"+',')  
 
-@app.route("/download", methods = ['GET', 'POST'])
+@app.route("/download",  methods = ['GET', 'POST'])
 def download():
     return render_template("download.html")
+
+@app.route('/download_files')
+def download_files():
+    target = 'controller/downloads/'
+
+    stream = BytesIO()
+    with ZipFile(stream, 'w') as zf:
+        for file in glob(os.path.join(target, '*.xlsx')):
+            zf.write(file, os.path.basename(file))
+    stream.seek(0)
+
+    return send_file(
+        stream,
+        as_attachment=True,
+        download_name='Buddy-up.zip'
+    )
     
 if __name__ == "__main__":
     app.run(debug=True)
