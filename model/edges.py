@@ -74,8 +74,9 @@ def pairing(continuingstudent, freshmen, exceptcountry):
     pair = []
     pairsummary ={}
 
-    # Base pairing: continuing students wants x number of freshers from the same nationality, without exceptions ("None") AND
-    # secondary pairing: continuing student wants x number of freshers from N different nationalities without exceptions
+    # Base pairing: continuing students wants x number of freshers from the same nationality, 
+    # without exceptions ("None") AND secondary pairing: continuing student wants x number of 4
+    # freshers from N different nationalities without exceptions
 
     if exceptcountry[0]=="None":
         # Ensure that Ghana is the last option in the list of preferrednationalities if it was specified.
@@ -93,7 +94,8 @@ def pairing(continuingstudent, freshmen, exceptcountry):
                             break 
 
                     # pairing when countries specified                    
-                    elif f.getNationality() in continuingstudent.getPreferredNationality() and continuingstudent.getGender()[0]== f.getGender():
+                    elif f.getNationality() in continuingstudent.getPreferredNationality() \
+                        and continuingstudent.getGender()[0]== f.getGender():
                         pair.append(f)
                         listoffreshmen.remove(f) # remove paired fresher 
                         break
@@ -101,7 +103,8 @@ def pairing(continuingstudent, freshmen, exceptcountry):
                         continue
             elif len(continuingstudent.getPreferredNationality())>1:
                 for f in freshmen: 
-                    if f.getNationality() in continuingstudent.getPreferredNationality() and continuingstudent.getGender()[0]== f.getGender():
+                    if f.getNationality() in continuingstudent.getPreferredNationality() \
+                        and continuingstudent.getGender()[0]== f.getGender():
                         pair.append(f)
                         listoffreshmen.remove(f)
                         break
@@ -132,7 +135,8 @@ def pairing(continuingstudent, freshmen, exceptcountry):
                 pairsummary = pairDescription(i, continuingstudent, pairsummary, pair)
                 return pairsummary
             else: 
-                # if continuing student specified more than one 'except country' so we can increase the index.
+                # if continuing student specified more than one 'except country' so we can 
+                # increase the index.
                 if len(exceptcountry)-index>1: 
                     index+=1
                     continue
@@ -191,7 +195,9 @@ class Edges:
                     if(len(listoffreshmen)==0):
                         print("Hurray, match is complete")    
                         print(len(listofcontinuingstudents), len(listoffreshmen))
-                        print("\n\n","number of matched pairs: ",countpairs,"\n total cardinalities used", countcardinality, "\n paired countinuing students",countcountinuingstudents, "\n not paired countinuing students", notpaired,"\n\n")                 
+                        print("\n\n","number of matched pairs: ",countpairs,"\n total cardinalities used", \
+                              countcardinality, "\n paired countinuing students",\
+                                countcountinuingstudents, "\n not paired countinuing students", notpaired,"\n\n")                 
                         return self.matched,self.reservedpairs
                     else:
                         summary = pairing(c, listoffreshmen, exceptcountry)  
@@ -232,22 +238,21 @@ class Edges:
                     else: 
                         continue
             else:
-                print("Error: Not enough females for pairing, repopulate female cardinality and then do matching again.") 
+                print("Error: Not enough females for pairing, repopulate female cardinality and \
+                      then do matching again.") 
                 return self.matched,self.reservedpairs 
         else: 
-            print("Error: Not enough males for pairing, repopulate male cardinality and then do matching again.")   
+            print("Error: Not enough males for pairing, repopulate male cardinality and then \
+                  do matching again.")   
             return self.matched,self.reservedpairs   
-
 
 matched = []
 reserved = []
 E = Edges(listofcontinuingstudents, listoffreshmen, matched, reserved)
+matched, reservedpairs = E.matching()
 
-def generateExcelFiles(status="paired-list", edges=E):
-    matched, reservedpairs = edges.matching()
-
-    print(len(matched), len(reservedpairs))
-
+def generateExcelFiles(status="paired-list", matched =matched, reservedpairs=reservedpairs):
+     
     if not os.path.exists('../controller/downloads'):
         os.makedirs('../controller/downloads')
 
@@ -255,6 +260,7 @@ def generateExcelFiles(status="paired-list", edges=E):
     data = []
 
     if(status=="paired-list"):
+
         # Loop through each pair of matched students
         for match in matched:
             cs = match['continuingstudent']
@@ -296,6 +302,7 @@ def generateExcelFiles(status="paired-list", edges=E):
         return "Successfully generated paired list"
     
     elif(status=="unpaired-list"):
+
         delimiter = ','
 
         # Loop through each pair of matched students
@@ -337,5 +344,5 @@ def generateExcelFiles(status="paired-list", edges=E):
         return "Internal error"
 
 
-generateExcelFiles(status="paired-list", edges=E)
-generateExcelFiles(status="unpaired-list",edges=E)
+generateExcelFiles(status="paired-list", matched=matched, reservedpairs=reservedpairs)
+generateExcelFiles(status="unpaired-list",matched=matched, reservedpairs=reservedpairs)

@@ -78,7 +78,7 @@ def progress():
                     os.chdir('model/')
                     subprocess.run(['python3', 'edges.py'])
 
-    return render_template("progress.html", name=f.filename+" successfully uploaded"+',')  
+    return render_template("progress.html", message= "Successful pairing!", name=f.filename+" successfully uploaded"+',')  
 
 @app.route("/download",  methods = ['GET', 'POST'])
 def download():
@@ -86,14 +86,19 @@ def download():
 
 @app.route('/download_files')
 def download_files():
-    target = 'controller/downloads/'
+    target = 'controller/downloads'
 
     stream = BytesIO()
     with ZipFile(stream, 'w') as zf:
         for file in glob(os.path.join(target, '*.xlsx')):
             zf.write(file, os.path.basename(file))
+            print(f'Added file {file} to zip file')
+        print(f'Zip file contains {len(zf.namelist())} files')
     stream.seek(0)
 
+    print(f'stream contains {len(stream.getvalue())} bytes')
+    print(f'stream contents: {stream.getvalue()}')
+    
     return send_file(
         stream,
         as_attachment=True,

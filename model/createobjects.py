@@ -10,7 +10,8 @@ from fresherClass import Fresher as fc
 def getCountry(countrycode):
     my_world = awoc.AWOC()
 
-    # some students can come from countries out of Africa, so we don't use the 
+    # some students can come from countries out of 
+    # Africa, so we don't use the 
     # get_countries_list_of('continentname')
     nations = my_world.get_countries() 
 
@@ -40,7 +41,8 @@ def continuingStudentObjects():
         cardinality=int(df.iloc[i,4])
 
         #create continuingstudent object
-        continuingstudent = csc(name,gender,pnationality,cardinality)
+        continuingstudent = \
+              csc(name,gender,pnationality,cardinality)
         
         #append continuing student to list
         listofcontinuingstudents.append(continuingstudent)
