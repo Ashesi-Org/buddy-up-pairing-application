@@ -30,4 +30,5 @@ class Fresher:
     #TOSTRING
 
     def toString(self):
-        return "name: "+self.name, "nationality: "+self.nationality,"gender: "+self.gender
+        return "name: "+self.name, "nationality: "+\
+            self.nationality,"gender: "+self.gender

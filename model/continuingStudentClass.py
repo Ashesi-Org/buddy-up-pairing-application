@@ -1,4 +1,3 @@
-
 class Continuing:
     def __init__(self, name, gender, preferred_nationality, cardinality):
         self.name = name
@@ -37,5 +36,6 @@ class Continuing:
     # TOSTRING
 
     def toString(self):
-        return "name: "+self.name,"preferred nationality: "+str(self.p_nationality),"gender: " \
-            +self.gender,"cardinality: "+str(self.cardinality)
+        return "name: "+self.name,"preferred nationality: " +\
+            str(self.p_nationality),"gender: "+\
+                self.gender,"cardinality: "+str(self.cardinality)

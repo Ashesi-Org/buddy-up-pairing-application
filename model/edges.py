@@ -206,11 +206,6 @@ class Edges:
                     for i in range(len(summary['freshers'])):
                         print(summary['freshers'][i].toString())
 
-                    #**
-                    # this part of the code is getting too big, create another function for this
-                    # next this is the part that would be useful for writing paired information to dataframe.
-                    #**
-
                     # a pairing summary status may or may not be complete, 
                     # if status is complete, append the paired item into the list.
                     if summary["status"]=="complete":
