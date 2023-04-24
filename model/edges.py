@@ -9,7 +9,7 @@ import os
 listofcontinuingstudents = continuingStudentObjects()
 listoffreshmen = freshmenObjects()
 
-print(len(listofcontinuingstudents), len(listoffreshmen))
+# print(len(listofcontinuingstudents), len(listoffreshmen))
 
 '''
     @brief: pairing constant determines if the number of continuing student present and their 
@@ -19,19 +19,19 @@ print(len(listofcontinuingstudents), len(listoffreshmen))
     continuing females/males for the fresher females/males and vice versa
 '''
 
-def pairingConstant(gender):
+def pairingConstant(gender, listofcs, listoffs):
     
     if gender=="Male" or gender=="Female":
         sumcon =0
 
-        for c in listofcontinuingstudents:
+        for c in listofcs:
             if(c.getGender()==gender):
                 sumcon+=c.getCardinality()
 
         sumfres =0
 
         # count male/females in incoming class.     
-        for f in listoffreshmen:
+        for f in listoffs:
             if(f.getGender()==gender[0]):
                 sumfres+=1
 
@@ -170,8 +170,8 @@ class Edges:
     def matching(self):
 
         # first check if they're enough male and female continuing students to be paired with male freshers
-        if pairingConstant("Male")==True:
-            if pairingConstant("Female")==True:
+        if pairingConstant("Male", listofcontinuingstudents, listoffreshmen)==True:
+            if pairingConstant("Female",listofcontinuingstudents, listoffreshmen)==True:
                 countpairs=0
                 countcardinality =0
                 countcountinuingstudents = 0
@@ -193,18 +193,20 @@ class Edges:
 
                     # Commence pairing
                     if(len(listoffreshmen)==0):
-                        print("Hurray, match is complete")    
-                        print(len(listofcontinuingstudents), len(listoffreshmen))
-                        print("\n\n","number of matched pairs: ",countpairs,"\n total cardinalities used", \
-                              countcardinality, "\n paired countinuing students",\
-                                countcountinuingstudents, "\n not paired countinuing students", notpaired,"\n\n")                 
+                        # print("Hurray, match is complete")    
+                        # print(len(listofcontinuingstudents), len(listoffreshmen))
+                        # print("\n\n","number of matched pairs: ",countpairs,"\n total cardinalities used", \
+                            #   countcardinality, "\n paired countinuing students",\
+                                # countcountinuingstudents, "\n not paired countinuing students", notpaired,"\n\n")                 
                         return self.matched,self.reservedpairs
                     else:
                         summary = pairing(c, listoffreshmen, exceptcountry)  
                     
-                    print('\n',summary['continuingstudent'].toString())
-                    for i in range(len(summary['freshers'])):
-                        print(summary['freshers'][i].toString())
+
+                    # OUTPUT
+                    # print('\n',summary['continuingstudent'].toString())
+                    # for i in range(len(summary['freshers'])):
+                    #     print(summary['freshers'][i].toString())
 
                     # a pairing summary status may or may not be complete, 
                     # if status is complete, append the paired item into the list.
@@ -215,16 +217,16 @@ class Edges:
                         countcardinality+=c.getCardinality()
                         countcountinuingstudents+=1
                         countpairs+=1
-                        print('I am complete')
+                        # print('I am complete')
                     elif summary["status"] == "incomplete":
                         paired["continuingstudent"] = summary["continuingstudent"]
                         paired["freshers"] = summary["freshers"]
                         if(len(summary["freshers"])==0):
-                            print('I am incomplete: I don\'t have any of my freshers')
+                            # print('I am incomplete: I don\'t have any of my freshers')
                             self.reservedpairs.append(paired['continuingstudent'])
                             notpaired+=1
                         else:
-                            print('I am incomplete: I don\'t have all of my freshers')
+                            # print('I am incomplete: I don\'t have all of my freshers')
                             listofcontinuingstudents.remove(c)
                             countcardinality+=c.getCardinality()
                             countpairs+=1
@@ -264,13 +266,12 @@ def generateExcelFiles(status="paired-list", matched =matched, reservedpairs=res
                 record = {
                     'freshername': f.getName(),
                     'buddyname': cs.getName(),
-                    'buddynationality': 'empty',
+                    'buddynationality': cs.getNationality(),
                     'buddygender': cs.getGender(),
                     'buddyyeargroup': 'empty',
                     'buddyemail': 'empty',
                     'buddyphonenumber': 'empty',
                     'funfact': 'empty'
-
                 }
                 # Add this dictionary to the list of data
                 data.append(record)
@@ -306,7 +307,7 @@ def generateExcelFiles(status="paired-list", matched =matched, reservedpairs=res
             record = {
                 'Fullname': cs.getName(),
                 'Gender': cs.getGender(),
-                'Nationality': 'empty',            
+                'Nationality': cs.getNationality(),            
                 'PreferredNationality': delimiter.join(cs.getPreferredNationality()),
                 'NumberofFreshers':cs.getCardinality(),
                 'Email': 'empty',

@@ -1,8 +1,9 @@
 class Continuing:
-    def __init__(self, name, gender, preferred_nationality, cardinality):
+    def __init__(self, name, gender, preferred_nationality, nationality,cardinality):
         self.name = name
         self.p_nationality = preferred_nationality
         self.gender = gender
+        self.nationality = nationality
         self.cardinality = int(cardinality)
 
     # GETTERS
@@ -18,6 +19,9 @@ class Continuing:
     
     def getCardinality(self):
         return self.cardinality
+    
+    def getNationality(self):
+        return self.nationality
 
     # SETTERS
 
@@ -32,10 +36,14 @@ class Continuing:
     
     def setCardinality(self,cardinality):
         self.cardinality=int(cardinality)
+    
+    def setNationality(self,nationality):
+        self.nationality= nationality
 
     # TOSTRING
 
     def toString(self):
         return "name: "+self.name,"preferred nationality: " +\
             str(self.p_nationality),"gender: "+\
-                self.gender,"cardinality: "+str(self.cardinality)
+                self.gender,"nationality: "+self.nationality,\
+                "cardinality: "+str(self.cardinality)

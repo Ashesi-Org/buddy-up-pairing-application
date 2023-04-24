@@ -9,7 +9,6 @@ from glob import glob
 from io import BytesIO
 from zipfile import ZipFile
 
-
 sys.path.append('model/createobjects.py')
 
 UPLOAD_FOLDER = 'controller/uploads'
@@ -73,12 +72,16 @@ def progress():
             isFile1 = os.path.isfile(path1)
             isFile2 = os.path.isfile(path2)
 
+            #condition to check if file path exist.
             if isFile1==True:
                 if isFile2 == True:
                     os.chdir('model/')
                     subprocess.run(['python3', 'edges.py'])
 
-    return render_template("progress.html", message= "Successful pairing!", name=f.filename+" successfully uploaded"+',')  
+            os.chdir('../')
+
+    return render_template("progress.html", message= "Successful pairing!", \
+                           name=f.filename+" successfully uploaded"+',')  
 
 @app.route("/download",  methods = ['GET', 'POST'])
 def download():

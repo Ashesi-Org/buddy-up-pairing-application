@@ -39,10 +39,10 @@ def continuingStudentObjects():
         gender=df.iloc[i,1]
         pnationality=df.iloc[i,3].replace(" ", "").split(',')
         cardinality=int(df.iloc[i,4])
-
+        nationality= df.iloc[i,2]
         #create continuingstudent object
         continuingstudent = \
-              csc(name,gender,pnationality,cardinality)
+              csc(name,gender,pnationality,nationality,cardinality)
         
         #append continuing student to list
         listofcontinuingstudents.append(continuingstudent)
