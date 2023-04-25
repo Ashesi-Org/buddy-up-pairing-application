@@ -24,6 +24,7 @@ class TestContinuing:
 
     def test_toString(self):
         c = Continuing("John Doe", "Male", "Canadian", "American", "3")
-        expected = ('name: John Doe', 'preferred nationality: Canadian', 'gender: Male', 'nationality: American', 'cardinality: 3')
+        expected = ('name: John Doe', 'preferred nationality: Canadian', \
+                    'gender: Male', 'nationality: American', 'cardinality: 3')
         print(c.toString())
         assert c.toString() == expected

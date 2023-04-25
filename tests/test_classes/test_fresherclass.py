@@ -1,6 +1,6 @@
 from model.fresherClass import Fresher
 
-class TestContinuing:
+class TestFresher:
     def test_constructor(self):
         f = Fresher("John Doe", "Male", "South African")
         assert f.getName() == "John Doe"

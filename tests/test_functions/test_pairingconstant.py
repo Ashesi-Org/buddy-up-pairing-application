@@ -22,4 +22,5 @@ def test_pairingConstant():
     assert pairingConstant("Female",listofcontinuingstudents,listoffreshmen) == False
     
     # Test the function with an invalid gender
-    assert pairingConstant("InvalidGender",listofcontinuingstudents,listoffreshmen) == "wrong parameter passed [in pairingConstant module]"
+    assert pairingConstant("InvalidGender",listofcontinuingstudents,listoffreshmen) == \
+        "wrong parameter passed [in pairingConstant module]"
